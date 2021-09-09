@@ -77,18 +77,17 @@
      nclu:
        commands:
          - add clag port bond LEAF1 interface swp1 clag-id 1
-         - add clag port bond LEAF1 interface swp2 clag-id 2
+         - add clag port bond LEAF2 interface swp2 clag-id 2
        commit: true
- - hosts: spine4
-    tasks:
-     - name: configure CLAG that will aggregate the interfaces on both spines 
-       nclu:
-         commands:
-           - add clag port bond LEAF1 interface swp2 clag-id 1
-           - add clag port bond LEAF1 interface swp1 clag-id 2
-         commit: true  
-       
-
+ 
+- hosts: spine3
+  tasks:
+   - name: Configure CLAG that will aggrigate the interfaces on both spines
+     nclu:
+       commands:
+         - add clag port bond LEAF1 interface swp1 clag-id 1
+         - add clag port bond LEAF2 interface swp2 clag-id 2
+       commit: true
 
 
 
