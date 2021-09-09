@@ -54,7 +54,7 @@
    - name: Configure MLAG peer
      nclu:
        commands:
-         - add clag peer sys-mac 44:38:39:FF:00:01 interface swp3-4 primary backup-ip 192.168.100.6
+         - add clag peer sys-mac 44:38:39:FF:00:01 interface swp3-4 primary backup-ip 192.168.200.6
        commit: true
 
 - hosts: spine4
@@ -62,7 +62,7 @@
    - name: Configure MLAG peer
      nclu:
        commands:
-         - add clag peer sys-mac 44:38:39:FF:00:01 interface swp3-4 secondary backup-ip 192.168.100.5
+         - add clag peer sys-mac 44:38:39:FF:00:01 interface swp3-4 secondary backup-ip 192.168.200.5
        commit: true
 
 
@@ -81,7 +81,7 @@
        commit: true
 
 - hosts: spine4
-  tasks:
+  tasks::
    - name: Configure CLAG that will aggrigate the interfaces on both spines
      nclu:
        commands:
