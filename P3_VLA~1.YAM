@@ -12,7 +12,7 @@
 ##################################
 
 # Reset servers configurations
-- name: Clear group A servers old configurations
+- name: Clear servers old configurations
   hosts: servers
   tasks:
     - name: Clear eth2 interface existing IP
