@@ -54,7 +54,9 @@
    - name: Configure MLAG peer
      nclu:
        commands:
-         - add clag peer sys-mac 44:38:39:FF:00:01 interface swp3-4 primary backup-ip 192.168.200.6
+         - add clag peer sys-mac 44:38:39:FF:00:01 interface swp3-4 primary backup-ip 192.168.200.6 vrf mgmt
+         - add vlan 2-3
+         
        commit: true
 
 - hosts: spine4
@@ -62,7 +64,8 @@
    - name: Configure MLAG peer
      nclu:
        commands:
-         - add clag peer sys-mac 44:38:39:FF:00:01 interface swp3-4 secondary backup-ip 192.168.200.5
+         - add clag peer sys-mac 44:38:39:FF:00:01 interface swp3-4 secondary backup-ip 192.168.200.5 vrf mgmt
+         - add vlan 2-3
        commit: true
 
 
