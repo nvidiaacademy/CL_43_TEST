@@ -13,17 +13,17 @@
 
 # Reset servers configurations
 - name: Clear group A servers old configurations
-  hosts: group_a_servers
+  hosts: servers
   tasks:
     - name: Clear eth2 interface existing IP
       command: sudo ifconfig eth2 0.0.0.0
     
-    - name: Clear static routes for network 172.30.0.0/16
+    - name: Clear static routes for network 172.16.0.0/16
       command: ip route del 172.16.0.0/16
       ignore_errors: yes         
 
 # Clear old switch configurations
-- name: Clear group A switches old configurations
+- name: Clear switches old configurations
   hosts: switches
   tasks: 
     - name: delete old NCLU commands
@@ -53,7 +53,7 @@
          - add bridge bridge vids 2,3       
        commit: true
 
-- hosts: cumulus_group_a_leaves
+- hosts: leaves
   tasks:
    - name: Set the host-facing ports as access ports in VLAN 1 and COMMIT changes
      nclu:
