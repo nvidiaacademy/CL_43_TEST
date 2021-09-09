@@ -12,8 +12,8 @@
 ##################################
 
 # Reset servers configurations
-- name: Clear group A servers old configurations
-  hosts: group_a_servers
+- name: Clear servers old configurations
+  hosts: servers
   tasks:
     - name: Clear eth2 interface existing IP
       command: sudo ifconfig eth2 0.0.0.0
@@ -23,8 +23,8 @@
       ignore_errors: yes         
 
 # Clear old switch configurations
-- name: Clear group A switches old configurations
-  hosts: cumulus_group_a_switches
+- name: Clear switches old configurations
+  hosts: switches
   tasks: 
     - name: delete old NCLU commands
       command: net del all
@@ -77,7 +77,7 @@
 ###############################   
 
 # Configurations on leaves 
-- hosts: cumulus_group_a_leaves
+- hosts: leaves
   tasks:
    - name: Create a bridge and set leaves inter switch links as trunk ports
      nclu:
@@ -94,7 +94,7 @@
 
 
 # Configurations on Spines 
-- hosts: cumulus_group_a_spines
+- hosts: spines
   tasks:
    - name: Create a bridge and set spines inter switch links as trunk ports
      nclu:
