@@ -79,7 +79,7 @@
          - add clag port bond LEAF1 interface swp1 clag-id 1
          - add clag port bond LEAF1 interface swp2 clag-id 2
        commit: true
-  - hosts: spine4
+ - hosts: spine4
     tasks:
      - name: configure CLAG that will aggregate the interfaces on both spines 
        nclu:
