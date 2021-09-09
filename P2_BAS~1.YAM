@@ -16,7 +16,7 @@
   hosts: group_a_servers
   tasks:
     - name: Clear eth2 interface existing IP
-      command: ifconfig eth2 0.0.0.0
+      command: sudo ifconfig eth2 0.0.0.0
     
     - name: Clear static routes for network 172.16.0.0/16
       command: ip route del 172.16.0.0/16
