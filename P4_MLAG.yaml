@@ -89,7 +89,7 @@
      nclu:
        commands:
          - add clag port bond LEAF1 interface swp2 clag-id 1
-         - add clag port bond LEAF2 interface swp2 clag-id 2
+         - add clag port bond LEAF2 interface swp1 clag-id 2
        commit: true
 
 
