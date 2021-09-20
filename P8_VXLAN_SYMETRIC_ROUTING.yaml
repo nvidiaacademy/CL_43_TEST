@@ -139,7 +139,7 @@
          - add loopback lo ip address 172.16.100.3/32
          - add bgp network 172.16.100.3/32
        commit: true
-
+       
   hosts: spine4
   tasks:
    - name: Create a loopback interface and advertise its prefix in the BGP process
