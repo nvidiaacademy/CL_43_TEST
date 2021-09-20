@@ -149,32 +149,6 @@
          - add bgp network 172.16.100.4/32
        commit: true
 
-####################################
-### Advertise local IP prefixes  ###
-####################################
-
-# Configurations on Leaves
-- hosts: leaf1
-  tasks:
-   - name: Advertise leaf local prefixes
-     nclu:
-       commands:
-         - add interface swp8 ip address 172.16.18.1/24
-         - add interface swp9 ip address 172.16.19.1/24
-         - add bgp network 172.16.18.0/24
-         - add bgp network 172.16.19.0/24
-       commit: true
-
-- hosts: leaf2
-  tasks:
-   - name: Advertise leaf local prefixes
-     nclu:
-       commands:
-         - add interface swp8 ip address 172.16.28.1/24
-         - add interface swp9 ip address 172.16.29.1/24
-         - add bgp network 172.16.28.0/24
-         - add bgp network 172.16.29.0/24
-       commit: true
 
 
 #########################
