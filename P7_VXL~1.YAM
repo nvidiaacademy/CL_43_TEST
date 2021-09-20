@@ -157,7 +157,7 @@
 
 # Clear host facing interfaces configurations
 - name: Clear host facing port configuration
-  hosts: cumulus_group_a_leaves
+  hosts: leaves
   tasks: 
     - name: reset configurations on swp8-9
       command: net del interface swp8-9
