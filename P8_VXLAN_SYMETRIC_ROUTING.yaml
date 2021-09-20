@@ -12,19 +12,19 @@
 ################################################################
 
 # Reset servers configurations
-- name: Clear group A servers old configurations
-  hosts: group_a_servers
+- name: Clear servers old configurations
+  hosts: servers
   tasks:
     - name: Clear eth2 interface existing IP
       command: ifconfig eth2 0.0.0.0
     
-    - name: Clear static routes for network 172.30.0.0/16
-      command: ip route del 172.30.0.0/16
+    - name: Clear static routes for network 172.16.0.0/16
+      command: ip route del 172.16.0.0/16
       ignore_errors: yes         
 
 # Clear old switch configurations
-- name: Clear group A switches old configurations
-  hosts: cumulus_group_a_switches
+- name: Clear switches old configurations
+  hosts: switches
   tasks: 
     - name: delete old NCLU commands
       command: net del all
@@ -38,7 +38,7 @@
 ##################
 
 # enable zebra on the /etc/frr/daemons file
-- hosts: cumulus_group_a_switches
+- hosts: switches
   tasks:
     - name: enable Zebra
       lineinfile:
@@ -56,7 +56,7 @@
       become: yes
 
 # restart FRR service
-- hosts: cumulus_group_a_switches
+- hosts: switches
   tasks: 
     - name: Restart FRR service
       command: systemctl restart frr
@@ -69,7 +69,7 @@
 ################################
 
 # Configurations on Spines
-- hosts: cumulus_group_a_spines
+- hosts: spines
   tasks:
 
    - name: Configure AS 65100
@@ -117,8 +117,8 @@
    - name: Create a loopback interface and advertise its prefix in the BGP process
      nclu:
        commands:
-         - add loopback lo ip address 172.30.100.1/32
-         - add bgp network 172.30.100.1/32
+         - add loopback lo ip address 172.16.100.1/32
+         - add bgp network 172.16.100.1/32
        commit: true
 
 - hosts: leaf2
@@ -126,8 +126,8 @@
    - name: Create a loopback interface and advertise its prefix in the BGP process
      nclu:
        commands:
-         - add loopback lo ip address 172.30.100.2/32
-         - add bgp network 172.30.100.2/32
+         - add loopback lo ip address 172.16.100.2/32
+         - add bgp network 172.16.100.2/32
        commit: true
 
 # Configurations on Spines
@@ -136,8 +136,8 @@
    - name: Create a loopback interface and advertise its prefix in the BGP process
      nclu:
        commands:
-         - add loopback lo ip address 172.30.100.3/32
-         - add bgp network 172.30.100.3/32
+         - add loopback lo ip address 172.16.100.3/32
+         - add bgp network 172.16.100.3/32
        commit: true
 
 - hosts: spine4
@@ -145,8 +145,8 @@
    - name: Create a loopback interface and advertise its prefix in the BGP process
      nclu:
        commands:
-         - add loopback lo ip address 172.30.100.4/32
-         - add bgp network 172.30.100.4/32
+         - add loopback lo ip address 172.16.100.4/32
+         - add bgp network 172.16.100.4/32
        commit: true
 
 ####################################
@@ -159,10 +159,10 @@
    - name: Advertise leaf local prefixes
      nclu:
        commands:
-         - add interface swp8 ip address 172.30.18.1/24
-         - add interface swp9 ip address 172.30.19.1/24
-         - add bgp network 172.30.18.0/24
-         - add bgp network 172.30.19.0/24
+         - add interface swp8 ip address 172.16.18.1/24
+         - add interface swp9 ip address 172.16.19.1/24
+         - add bgp network 172.16.18.0/24
+         - add bgp network 172.16.19.0/24
        commit: true
 
 - hosts: leaf2
@@ -170,10 +170,10 @@
    - name: Advertise leaf local prefixes
      nclu:
        commands:
-         - add interface swp8 ip address 172.30.28.1/24
-         - add interface swp9 ip address 172.30.29.1/24
-         - add bgp network 172.30.28.0/24
-         - add bgp network 172.30.29.0/24
+         - add interface swp8 ip address 172.16.28.1/24
+         - add interface swp9 ip address 172.16.29.1/24
+         - add bgp network 172.16.28.0/24
+         - add bgp network 172.16.29.0/24
        commit: true
 
 
@@ -183,7 +183,7 @@
 
 # Clear host facing interfaces configurations
 - name: Clear host facing port configuration
-  hosts: cumulus_group_a_leaves
+  hosts: leaves
   tasks: 
     - name: reset configurations on swp8-9
       command: net del interface swp8-9
@@ -240,8 +240,8 @@
    - name: Configure VXLAN local tunnel endpoint
      nclu:
        commands:
-         - add vxlan VNI-10 vxlan local-tunnelip 172.30.100.1
-         - add vxlan VNI-20 vxlan local-tunnelip 172.30.100.1
+         - add vxlan VNI-10 vxlan local-tunnelip 172.16.100.1
+         - add vxlan VNI-20 vxlan local-tunnelip 172.16.100.1
        commit: true
 
 - hosts: leaf2
@@ -264,8 +264,8 @@
    - name: Configure VXLAN local tunnel endpoint
      nclu:
        commands:
-         - add vxlan VNI-10 vxlan local-tunnelip 172.30.100.2
-         - add vxlan VNI-20 vxlan local-tunnelip 172.30.100.2
+         - add vxlan VNI-10 vxlan local-tunnelip 172.16.100.2
+         - add vxlan VNI-20 vxlan local-tunnelip 172.16.100.2
        commit: true
 
 
@@ -274,7 +274,7 @@
 ######################
 
 # Configurations on Spines
-- hosts: cumulus_group_a_spines
+- hosts: spines
   tasks:
    - name: Form EVPN neighborship with leaves
      nclu:
@@ -283,7 +283,7 @@
        commit: true
 
 # Configurations on leaves
-- hosts: cumulus_group_a_leaves
+- hosts: leaves
   tasks:
    - name: Form EVPN neighborship with spines and advertise VNIs
      nclu:
@@ -303,38 +303,38 @@
   hosts: host1
   tasks: 
     - name: Configure IP address
-      command: ifconfig eth2 172.30.10.18/24
+      command: ifconfig eth2 172.16.10.18/24
 
 - name: Configure host2
   hosts: host2
   tasks: 
     - name: Configure IP address
-      command: ifconfig eth2 172.30.20.19/24
+      command: ifconfig eth2 172.16.20.19/24
 
 - name: Configure host3
   hosts: host3
   tasks: 
     - name: Configure IP address
-      command: ifconfig eth2 172.30.10.28/24
+      command: ifconfig eth2 172.16.10.28/24
 
 - name: Configure host4
   hosts: host4
   tasks: 
     - name: Configure IP address
-      command: ifconfig eth2 172.30.20.29/24
+      command: ifconfig eth2 172.16.20.29/24
 
 # Configure default gateways
 - name: Add static route entry for VLAN 10
   hosts: host1, host3
   tasks:
-    - name: Add default gateway for 172.30.0.0/16
-      command: ip route add 172.30.0.0/16 dev eth2 via 172.30.10.254
+    - name: Add default gateway for 172.16.0.0/16
+      command: ip route add 172.16.0.0/16 dev eth2 via 172.16.10.254
     
 - name: Add static route entry for VLAN 20
   hosts: host2, host4
   tasks:
-    - name: Add default gateway for 172.30.0.0/16
-      command: ip route add 172.30.0.0/16 dev eth2 via 172.30.20.254
+    - name: Add default gateway for 172.16.0.0/16
+      command: ip route add 172.16.0.0/16 dev eth2 via 172.16.20.254
 
 #######################################
 # Task 2: Configure SVIs on the VTEPs #
@@ -347,10 +347,10 @@
    - name: Configure SVIs
      nclu:
        commands:
-         - add vlan 10 ip address 172.30.10.252/24
-         - add vlan 10 ip address-virtual 00:00:5e:00:01:01 172.30.10.254/24
-         - add vlan 20 ip address 172.30.20.252/24
-         - add vlan 20 ip address-virtual 00:00:5e:00:01:02 172.30.20.254/24
+         - add vlan 10 ip address 172.16.10.252/24
+         - add vlan 10 ip address-virtual 00:00:5e:00:01:01 172.16.10.254/24
+         - add vlan 20 ip address 172.16.20.252/24
+         - add vlan 20 ip address-virtual 00:00:5e:00:01:02 172.16.20.254/24
        commit: true
 
 - hosts: leaf2
@@ -359,10 +359,10 @@
    - name: Configure SVIs
      nclu:
        commands:
-         - add vlan 100 ip address 172.30.10.253/24
-         - add vlan 100 ip address-virtual 00:00:5e:00:01:01 172.30.10.254/24
-         - add vlan 200 ip address 172.30.20.253/24
-         - add vlan 200 ip address-virtual 00:00:5e:00:01:02 172.30.20.254/24
+         - add vlan 100 ip address 172.16.10.253/24
+         - add vlan 100 ip address-virtual 00:00:5e:00:01:01 172.16.10.254/24
+         - add vlan 200 ip address 172.16.20.253/24
+         - add vlan 200 ip address-virtual 00:00:5e:00:01:02 172.16.20.254/24
        commit: true
 
 ######################## 
