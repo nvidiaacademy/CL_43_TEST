@@ -13,7 +13,7 @@
 
 # Reset servers configurations
 - name: Clear servers old configurations
-- hosts: servers
+  hosts: servers
   tasks:
     - name: Clear eth2 interface existing IP
       command: ifconfig eth2 0.0.0.0
@@ -24,7 +24,7 @@
 
 # Clear old switch configurations
 - name: Clear switches old configurations
-- hosts: switches
+  hosts: switches
   tasks: 
     - name: delete old NCLU commands
       command: net del all
@@ -56,7 +56,7 @@
       become: yes
 
 # restart FRR service
-- hosts: switches
+  hosts: switches
   tasks: 
     - name: Restart FRR service
       command: systemctl restart frr
@@ -69,7 +69,7 @@
 ################################
 
 # Configurations on Spines
-- hosts: spines
+  hosts: spines
   tasks:
 
    - name: Configure AS 65100
@@ -86,7 +86,7 @@
 
 
 # Configurations on Leaves
-- hosts: leaf1
+  hosts: leaf1
   tasks:
 
    - name: Configure AS 65101 and form eBGP neighborship with spines
@@ -96,7 +96,7 @@
          - add bgp neighbor swp1-2 interface remote-as external
        commit: true
 
-- hosts: leaf2
+  hosts: leaf2
   tasks:
 
    - name: Configure AS 65102 and form eBGP neighborship with spines
@@ -112,7 +112,7 @@
 #####################################
 
 # Configurations on Leaves
-- hosts: leaf1
+  hosts: leaf1
   tasks:
    - name: Create a loopback interface and advertise its prefix in the BGP process
      nclu:
@@ -121,7 +121,7 @@
          - add bgp network 172.16.100.1/32
        commit: true
 
-- hosts: leaf2
+  hosts: leaf2
   tasks:
    - name: Create a loopback interface and advertise its prefix in the BGP process
      nclu:
@@ -131,7 +131,7 @@
        commit: true
 
 # Configurations on Spines
-- hosts: spine3
+  hosts: spine3
   tasks:
    - name: Create a loopback interface and advertise its prefix in the BGP process
      nclu:
@@ -140,7 +140,7 @@
          - add bgp network 172.16.100.3/32
        commit: true
 
-- hosts: spine4
+  hosts: spine4
   tasks:
    - name: Create a loopback interface and advertise its prefix in the BGP process
      nclu:
@@ -163,7 +163,7 @@
       command: net del interface swp8-9
 
 # Configurations on Leaves
-- hosts: leaf1
+  hosts: leaf1
   tasks:
 
    - name: Configure host facing ports
@@ -175,7 +175,7 @@
          - add interface swp9 bridge access 20
        commit: true
 
-- hosts: leaf2
+  hosts: leaf2
   tasks:
 
    - name: Configure host facing ports
@@ -195,7 +195,7 @@
 
 ## Configurations on Leaves
 
-- hosts: leaf1
+  hosts: leaf1
   tasks:
 
    - name: Create VXLAN interface
@@ -219,7 +219,7 @@
          - add vxlan VNI-20 vxlan local-tunnelip 172.16.100.1
        commit: true
 
-- hosts: leaf2
+  hosts: leaf2
   tasks:
 
    - name: Create VXLAN interface
@@ -249,7 +249,7 @@
 ######################
 
 # Configurations on Spines
-- hosts: spines
+  hosts: spines
   tasks:
    - name: Form EVPN neighborship with leaves
      nclu:
@@ -258,7 +258,7 @@
        commit: true
 
 # Configurations on leaves
-- hosts: leaves
+  hosts: leaves
   tasks:
    - name: Form EVPN neighborship with spines and advertise VNIs
      nclu:
@@ -316,7 +316,7 @@
 #######################################
 
 # Configurations on Leaves
-- hosts: leaf1
+  hosts: leaf1
   tasks:
 
    - name: Configure SVIs
@@ -328,7 +328,7 @@
          - add vlan 20 ip address-virtual 00:00:5e:00:01:02 172.16.20.254/24
        commit: true
 
-- hosts: leaf2
+  hosts: leaf2
   tasks:
 
    - name: Configure SVIs
@@ -349,7 +349,7 @@
 #############################################################
 
 # Configure VNI-4001  ON Leaves
-- hosts: leaf1
+  hosts: leaf1
   tasks:
    - name: configure VXLAN 4001 and Map Tunnel IP
      nclu:
@@ -360,7 +360,7 @@
          - add vxlan VNI-4001 vxlan local-tunnelip 172.16.100.1
 
 # Configure VNI-4001  ON Leaves
-- hosts: leaf2
+  hosts: leaf2
   tasks:
    - name: configure VXLAN 4001 and Map Tunnel IP
      nclu:
@@ -371,7 +371,7 @@
          - add vxlan VNI-4001 vxlan local-tunnelip 172.16.100.2
 
 # Configure and map L3-VNI 4001 to VRFA
-- hosts: leaf1
+  hosts: leaf1
   tasks:
    - name: configure VXLAN 4001 to VRFA
      nclu:
@@ -381,7 +381,7 @@
          - add VRFA vni 4001
        commit: true
 # Configure and map L3-VNI 4001 to VRFA
-- hosts: leaf2
+  hosts: leaf2
   tasks:
    - name: Configure and map L3-VNI 4001 to VRFA
      nclu:
@@ -392,7 +392,7 @@
        commit: true
        
 # Configure Anycast Gateway
-- hosts: leaf1
+  hosts: leaf1
   tasks:
    - name: configure ANYCAST GATEWAYS AND MAP SVIS TO VRFA
      nclu:
@@ -402,7 +402,7 @@
          - add vlan 20 ip address 172.16.20.252/24
          - add vlan 20 vrf VRFA
 
-- hosts: leaf2
+  hosts: leaf2
   tasks:
    - name: configure ANYCAST GATEWAYS AND MAP SVIS TO VRFA
      nclu:
@@ -414,7 +414,7 @@
 
 # Configure  default gateway  svis  virtual mac address   
 
-- hosts: leaf1
+  hosts: leaf1
   tasks:
    - name: Configure default gateway svis virtual mac address
      nclu:
@@ -423,7 +423,7 @@
          - add vlan 20 ip address-virtual 00:00:5e:00:01:02 172.16.20.254/24
        commit: true
          
-- hosts: leaf2
+  hosts: leaf2
   tasks:
    - name: Configure default gateway svis virtual mac address
      nclu:
