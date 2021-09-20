@@ -195,7 +195,8 @@
    - name: Configure host facing ports
      nclu:
        commands:
-         - add bridge bridge vids 10,20  
+         - add bridge bridge vids 10,20
+         - add bridge bridgr ports swp8-9
          - add interface swp8 bridge access 10
          - add interface swp9 bridge access 20
        commit: true
@@ -405,6 +406,15 @@
          - add vlan 4001 vrf VRFA
          - add VRFA vni 4001
        commit: true
+ - hosts: leaf2
+   tasks:
+    - name: configure VXLAN 4001 and Map Tunnel IP
+      nclu:
+        commands:
+          - add vrf VFRA
+          - add vlan 4001 vrf VRFA
+          - add VRFA vni 4001
+        commit: true
 
 # Configure Anycast Gateway
 - hosts: leaf1
