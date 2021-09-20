@@ -286,7 +286,7 @@
       command: ifconfig eth2 172.16.20.19/24
 
 - name: Configure host3
-  hosts: mtlacad03
+  hosts: host3
   tasks: 
     - name: Configure IP address
       command: ifconfig eth2 172.16.10.28/24
