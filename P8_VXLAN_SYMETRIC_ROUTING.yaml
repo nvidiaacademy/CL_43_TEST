@@ -38,7 +38,7 @@
 ##################
 
 # enable zebra on the /etc/frr/daemons file
-- hosts: switches
+  hosts: switches
   tasks:
     - name: enable Zebra
       lineinfile:
@@ -156,7 +156,6 @@
 #########################
 
 # Clear host facing interfaces configurations
-- name: Clear host facing port configuration
   hosts: leaves
   tasks: 
     - name: reset configurations on swp8-9
@@ -177,7 +176,6 @@
 
   hosts: leaf2
   tasks:
-
    - name: Configure host facing ports
      nclu:
        commands:
